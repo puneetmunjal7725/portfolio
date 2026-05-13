@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puneet Kumar – AI Content & Visual Strategist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#080808; --bg2:#0f0f0f; --card:#111111; --border:#1f1f1f;
+    --gold:#c8a96e; --gold2:#e8c98a; --white:#f0ede8;
+    --muted:#6b6b6b; --muted2:#4a4a4a; --text:#d8d4cc;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+
+  /* ── BACKGROUND DECORATIVE LAYER ── */
+  #bg-canvas{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+  .bg-orb{position:absolute;border-radius:50%;filter:blur(90px);animation:orbFloat 14s ease-in-out infinite;}
+  .bg-orb-1{width:700px;height:700px;background:radial-gradient(circle,rgba(200,169,110,.12),transparent 70%);top:-200px;right:-200px;animation-delay:0s;}
+  .bg-orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(200,169,110,.08),transparent 70%);bottom:-200px;left:-100px;animation-delay:-5s;animation-duration:18s;}
+  .bg-orb-3{width:250px;height:250px;background:radial-gradient(circle,rgba(200,169,110,.07),transparent 70%);top:45%;left:45%;animation-delay:-9s;animation-duration:11s;}
+  @keyframes orbFloat{0%,100%{transform:translate(0,0)}33%{transform:translate(-25px,20px)}66%{transform:translate(18px,-18px)}}
+
+  /* Diagonal hatching overlay */
+  .bg-lines{position:absolute;inset:0;
+    background-image:
+      repeating-linear-gradient(45deg,rgba(200,169,110,.018) 0,rgba(200,169,110,.018) 1px,transparent 1px,transparent 64px),
+      repeating-linear-gradient(-45deg,rgba(200,169,110,.012) 0,rgba(200,169,110,.012) 1px,transparent 1px,transparent 96px);}
+
+  /* Floating geometric outlines */
+  .bg-geo{position:absolute;animation:geoSpin 28s linear infinite;}
+  .bg-geo-1{width:220px;height:220px;border:1px solid rgba(200,169,110,.05);top:18%;right:6%;animation-duration:32s;}
+  .bg-geo-2{width:110px;height:110px;border:1px solid rgba(200,169,110,.06);bottom:22%;left:4%;animation-direction:reverse;animation-duration:22s;}
+  .bg-geo-3{width:70px;height:70px;border:1px solid rgba(200,169,110,.07);top:62%;right:18%;animation-duration:16s;}
+  @keyframes geoSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+  /* Scanline texture */
+  body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.025) 2px,rgba(0,0,0,.025) 4px);pointer-events:none;z-index:9996;}
+
+  /* Noise */
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9997;opacity:.4;}
+
+  /* Cursor */
+  .cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+  .cursor-follower{position:fixed;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .35s ease,width .2s,height .2s,opacity .2s;opacity:.5;}
+  .cursor-follower.expand{width:60px;height:60px;opacity:.2;}
+
+  /* Nav */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 60px;background:linear-gradient(to bottom,rgba(8,8,8,.98),transparent);}
+  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--gold);}
+  .nav-links{display:flex;gap:40px;list-style:none;}
+  .nav-links a{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s;}
+  .nav-links a:hover{color:var(--gold);}
+  .nav-cta{background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:10px 22px;cursor:none;text-decoration:none;transition:background .3s,color .3s;}
+  .nav-cta:hover{background:var(--gold);color:var(--bg);}
+
+  /* Hero */
+  #hero{min-height:100vh;display:flex;align-items:center;padding:0 60px;position:relative;overflow:hidden;z-index:1;}
+  .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(200,169,110,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(200,169,110,.03) 1px,transparent 1px);background-size:80px 80px;animation:gridPulse 8s ease infinite;}
+  @keyframes gridPulse{0%,100%{opacity:.5}50%{opacity:1}}
+  .hero-glow{position:absolute;top:-200px;right:-200px;width:700px;height:700px;background:radial-gradient(circle,rgba(200,169,110,.06),transparent 70%);animation:glowPulse 6s ease infinite;}
+  .hero-glow2{position:absolute;bottom:-300px;left:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(224,60,60,.04),transparent 70%);animation:glowPulse 8s ease infinite reverse;}
+  @keyframes glowPulse{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.1);opacity:1}}
+  .hero-content{position:relative;z-index:2;max-width:800px;}
+  .hero-eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;opacity:0;animation:fadeUp .8s ease .3s forwards;}
+  .hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,12vw,140px);line-height:.92;letter-spacing:-2px;color:var(--white);opacity:0;animation:fadeUp .8s ease .5s forwards;}
+  .hero-name span{color:var(--gold);}
+  .hero-title{font-size:clamp(16px,2.5vw,22px);font-weight:300;color:var(--muted);margin-top:20px;letter-spacing:1px;opacity:0;animation:fadeUp .8s ease .7s forwards;}
+  .hero-desc{font-size:15px;color:var(--muted);line-height:1.8;max-width:500px;margin-top:24px;opacity:0;animation:fadeUp .8s ease .9s forwards;}
+  .hero-actions{display:flex;gap:16px;margin-top:40px;opacity:0;animation:fadeUp .8s ease 1.1s forwards;}
+  .btn-primary{background:var(--gold);color:var(--bg);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;text-decoration:none;cursor:none;transition:background .3s,transform .2s;display:inline-block;}
+  .btn-primary:hover{background:var(--gold2);transform:translateY(-2px);}
+  .btn-outline{border:1px solid var(--border);color:var(--muted);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;text-decoration:none;cursor:none;transition:border-color .3s,color .3s,transform .2s;display:inline-block;}
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px);}
+  .hero-stats{position:absolute;right:60px;bottom:80px;display:flex;flex-direction:column;gap:32px;opacity:0;animation:fadeUp .8s ease 1.3s forwards;z-index:2;}
+  .stat-item{text-align:right;}
+  .stat-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--gold);line-height:1;}
+  .stat-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+  .scroll-indicator{position:absolute;bottom:32px;left:60px;display:flex;align-items:center;gap:12px;opacity:0;animation:fadeUp .8s ease 1.5s forwards;z-index:2;}
+  .scroll-line{width:40px;height:1px;background:var(--gold);animation:scrollLine 2s ease infinite;}
+  @keyframes scrollLine{0%{width:40px;opacity:1}100%{width:80px;opacity:0}}
+  .scroll-text{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+  /* Sections */
+  section{padding:120px 60px;position:relative;z-index:1;}
+  .section-header{display:flex;align-items:baseline;gap:20px;margin-bottom:80px;}
+  .section-num{font-family:'Space Mono',monospace;font-size:12px;color:var(--gold);letter-spacing:2px;}
+  .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(42px,6vw,72px);color:var(--white);letter-spacing:2px;}
+  .section-line{flex:1;height:1px;background:var(--border);margin-bottom:6px;}
+
+  /* Ghost watermark letters per section */
+  .section-watermark{position:absolute;right:40px;top:80px;font-family:'Bebas Neue',sans-serif;font-size:clamp(100px,15vw,220px);color:transparent;-webkit-text-stroke:1px rgba(200,169,110,.04);line-height:1;pointer-events:none;user-select:none;letter-spacing:-4px;}
+
+  /* About */
+  #about{background:var(--bg2);}
+  #about::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(200,169,110,.05) 1px,transparent 1px);background-size:36px 36px;pointer-events:none;}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;position:relative;z-index:1;}
+  .about-text{font-size:16px;line-height:1.9;color:var(--text);margin-bottom:24px;}
+  .about-text strong{color:var(--gold);font-weight:500;}
+  .skills-group{margin-bottom:40px;}
+  .skills-group-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:8px;}
+  .skills-tags{display:flex;flex-wrap:wrap;gap:8px;}
+  .tag{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;padding:6px 14px;border:1px solid var(--border);color:var(--muted);transition:border-color .3s,color .3s,background .3s;}
+  .tag:hover{border-color:var(--gold);color:var(--gold);background:rgba(200,169,110,.05);}
+
+  /* Work */
+  #work{background:var(--bg);}
+  .work-tabs{display:flex;gap:0;margin-bottom:60px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+  .work-tab{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:14px 24px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .3s,border-color .3s;background:none;border-top:none;border-left:none;border-right:none;}
+  .work-tab:hover{color:var(--gold);}
+  .work-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+  .work-panel{display:none;}
+  .work-panel.active{display:block;}
+
+  /* ── UNIFIED VERTICAL VIDEO GRID (9:16) — all categories ── */
+  .videos-grid,
+  .videos-grid-clothing,
+  .videos-grid-svc,
+  .videos-grid-re {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:6px;
+  }
+  @media(max-width:900px){
+    .videos-grid,.videos-grid-clothing,.videos-grid-svc,.videos-grid-re{grid-template-columns:repeat(2,1fr);}
+  }
+  @media(max-width:500px){
+    .videos-grid,.videos-grid-clothing,.videos-grid-svc,.videos-grid-re{grid-template-columns:repeat(1,1fr);}
+  }
+
+  /* All video cards — same portrait card */
+  .video-card,.video-card-cl,.video-card-svc,.video-card-re {
+    position:relative;overflow:hidden;background:var(--card);
+    aspect-ratio:9/16;cursor:pointer;
+    border:1px solid var(--border);
+    transition:border-color .3s;
+  }
+  .video-card:hover,.video-card-cl:hover,.video-card-svc:hover,.video-card-re:hover{border-color:var(--gold);}
+  /* Remove any wide/full overrides */
+  .video-card.wide{grid-column:unset;aspect-ratio:9/16;}
+  .video-card-svc.full,.video-card-re.full{grid-column:unset;aspect-ratio:9/16;}
+
+  .video-card video,.video-card-cl video,.video-card-svc video,.video-card-re video{
+    width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease;
+  }
+  .video-card:hover video,.video-card-cl:hover video,.video-card-svc:hover video,.video-card-re:hover video{transform:scale(1.04);}
+
+  /* Overlay */
+  .video-overlay,
+  .video-card-cl .video-overlay,
+  .video-card-svc .video-overlay,
+  .video-card-re .video-overlay {
+    position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(0,0,0,.85),transparent 55%);
+    opacity:0;transition:opacity .4s;
+    display:flex;align-items:flex-end;padding:16px;pointer-events:none;
+  }
+  .video-card:hover .video-overlay,
+  .video-card-cl:hover .video-overlay,
+  .video-card-svc:hover .video-overlay,
+  .video-card-re:hover .video-overlay{opacity:1;}
+  .video-card.playing .video-overlay,
+  .video-card-cl.playing .video-overlay,
+  .video-card-svc.playing .video-overlay,
+  .video-card-re.playing .video-overlay{opacity:0;}
+
+  .video-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+
+  /* Play button */
+  .play-btn,
+  .video-card-cl .play-btn,
+  .video-card-svc .play-btn,
+  .video-card-re .play-btn {
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:52px;height:52px;
+    border:1px solid rgba(200,169,110,.65);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    opacity:1;transition:opacity .3s,transform .3s;
+    background:rgba(0,0,0,.6);backdrop-filter:blur(4px);pointer-events:none;
+  }
+  .play-btn svg,
+  .video-card-cl .play-btn svg,
+  .video-card-svc .play-btn svg,
+  .video-card-re .play-btn svg {
+    fill:var(--gold);width:20px;height:20px;margin-left:4px;
+  }
+  .video-card.playing .play-btn,
+  .video-card-cl.playing .play-btn,
+  .video-card-svc.playing .play-btn,
+  .video-card-re.playing .play-btn{opacity:0;}
+  .video-card:hover .play-btn,
+  .video-card-cl:hover .play-btn,
+  .video-card-svc:hover .play-btn,
+  .video-card-re:hover .play-btn{transform:translate(-50%,-50%) scale(1.12);}
+
+  /* Image gallery — all vertical 9:16 uniform grid */
+  .img-block{margin-bottom:60px;}
+  .img-section-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+  .img-grid-4,.img-grid-3,.img-grid-2{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+  @media(max-width:900px){.img-grid-4,.img-grid-3,.img-grid-2{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:500px){.img-grid-4,.img-grid-3,.img-grid-2{grid-template-columns:1fr;}}
+  .img-card{position:relative;overflow:hidden;background:var(--card);cursor:pointer;aspect-ratio:9/16;border:1px solid var(--border);transition:border-color .3s;}
+  .img-card:hover{border-color:var(--gold);}
+  .img-card.portrait,.img-card.landscape,.img-card.square,.img-card.blueprint{aspect-ratio:9/16;}
+  .img-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease;}
+  .img-card:hover img{transform:scale(1.06);}
+  .img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8),transparent 55%);opacity:0;transition:opacity .4s;display:flex;align-items:flex-end;padding:16px;}
+  .img-card:hover .img-overlay{opacity:1;}
+  .img-overlay-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+
+  /* Lightbox */
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:9990;display:none;align-items:center;justify-content:center;}
+  .lightbox.open{display:flex;}
+  .lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;}
+  .lightbox-close{position:absolute;top:30px;right:40px;font-size:28px;color:var(--gold);cursor:pointer;background:none;border:none;font-family:'Space Mono',monospace;}
+
+  /* Panel meta */
+  .cat-badge{display:inline-block;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--bg);background:var(--gold);padding:3px 10px;margin-bottom:16px;}
+  .cat-desc{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--muted);line-height:1.8;max-width:680px;margin-bottom:36px;}
+  .panel-hint{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-top:20px;letter-spacing:1px;}
+
+  /* Experience */
+  #experience{background:var(--bg2);}
+  #experience::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(200,169,110,.04) 1px,transparent 1px);background-size:36px 36px;pointer-events:none;}
+  .exp-list{max-width:900px;position:relative;z-index:1;}
+  .exp-item{display:grid;grid-template-columns:200px 1fr;gap:40px;padding:48px 0;border-bottom:1px solid var(--border);position:relative;opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;}
+  .exp-item.visible{opacity:1;transform:translateY(0);}
+  .exp-item::before{content:'';position:absolute;left:-60px;top:0;bottom:0;width:1px;background:var(--border);}
+  .exp-item::after{content:'';position:absolute;left:-64px;top:48px;width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px rgba(200,169,110,.6);}
+  .exp-period{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;}
+  .exp-company{font-size:13px;color:var(--muted);line-height:1.5;}
+  .exp-role{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--white);letter-spacing:1px;margin-bottom:16px;}
+  .exp-points{list-style:none;display:flex;flex-direction:column;gap:8px;}
+  .exp-points li{font-size:14px;color:var(--muted);line-height:1.7;padding-left:16px;position:relative;}
+  .exp-points li::before{content:'—';position:absolute;left:0;color:var(--gold);font-size:10px;}
+
+  /* Certs */
+  #certifications{background:var(--bg);}
+  .certs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+  .cert-card{background:var(--card);padding:36px 32px;position:relative;overflow:hidden;transition:background .3s;}
+  .cert-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .4s ease;}
+  .cert-card:hover{background:var(--bg2);}
+  .cert-card:hover::before{transform:scaleX(1);}
+  .cert-icon{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .cert-icon::before{content:'';display:inline-block;width:20px;height:1px;background:var(--gold);}
+  .cert-name{font-size:15px;font-weight:500;color:var(--white);line-height:1.5;margin-bottom:8px;}
+  .cert-issuer{font-size:12px;color:var(--muted);}
+
+  /* Contact */
+  #contact{background:var(--bg2);}
+  .contact-inner{max-width:700px;margin:0 auto;text-align:center;position:relative;z-index:1;}
+  .contact-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,100px);color:var(--white);letter-spacing:2px;line-height:.95;margin-bottom:32px;}
+  .contact-big span{color:var(--gold);}
+  .contact-sub{font-size:16px;color:var(--muted);line-height:1.8;margin-bottom:48px;}
+  .contact-details{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin-bottom:48px;}
+  .contact-item{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .contact-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+  .contact-value{font-size:14px;color:var(--text);text-decoration:none;transition:color .3s;}
+  .contact-value:hover{color:var(--gold);}
+
+  footer{background:var(--bg);padding:24px 60px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);position:relative;z-index:1;}
+  .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--gold);}
+  .footer-copy{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--muted2);}
+
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  .section-header{position:relative;z-index:1;}
+
+  @media(max-width:900px){.videos-grid-clothing{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:768px){
+    nav{padding:16px 20px;} .nav-links,.nav-cta{display:none;}
+    section{padding:80px 20px;} #hero{padding:0 20px;} .hero-stats{display:none;}
+    .about-grid{grid-template-columns:1fr;gap:40px;}
+    .videos-grid{grid-template-columns:1fr;} .video-card.wide{grid-column:span 1;aspect-ratio:9/16;}
+    .videos-grid-clothing{grid-template-columns:1fr 1fr;}
+    .videos-grid-svc{grid-template-columns:1fr;} .video-card-svc.full{grid-column:span 1;}
+    .videos-grid-re{grid-template-columns:1fr;} .video-card-re.full{grid-column:span 1;}
+    .exp-item{grid-template-columns:1fr;gap:16px;} .exp-item::before,.exp-item::after{display:none;}
+    .certs-grid{grid-template-columns:1fr;} .contact-details{flex-direction:column;gap:24px;}
+    footer{flex-direction:column;gap:8px;} .hero-actions{flex-direction:column;}
+    .img-grid-3,.img-grid-4{grid-template-columns:1fr 1fr;} .img-grid-2{grid-template-columns:1fr;}
+    .section-watermark{display:none;} .bg-geo{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div id="bg-canvas">
+  <div class="bg-lines"></div>
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+  <div class="bg-geo bg-geo-1"></div>
+  <div class="bg-geo bg-geo-2"></div>
+  <div class="bg-geo bg-geo-3"></div>
+</div>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursorFollower"></div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lbClose">✕</button>
+  <img id="lbImg" src="" alt="">
+</div>
+
+<nav>
+  <div class="nav-logo">PK</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:work.puneetkumar@gmail.com" class="nav-cta">Hire Me</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">AI Content & Visual Strategist</div>
+    <h1 class="hero-name">PUNEET<br><span>KUMAR</span></h1>
+    <div class="hero-title">Building Brands Through AI · Content · Strategy</div>
+    <p class="hero-desc">I create AI-generated product visuals, short-form social videos, and brand content that performs. From prompt to publish — fast, creative, and conversion-focused.</p>
+    <div class="hero-actions">
+      <a href="#work" class="btn-primary">View My Work</a>
+      <a href="#contact" class="btn-outline">Get In Touch</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item"><div class="stat-num">70+</div><div class="stat-label">AI Video Templates Built</div></div>
+    <div class="stat-item"><div class="stat-num">25%</div><div class="stat-label">Orders from Instagram</div></div>
+    <div class="stat-item"><div class="stat-num">10+</div><div class="stat-label">Certifications</div></div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-watermark">ABOUT</div>
+  <div class="section-header reveal">
+    <span class="section-num">01</span><h2 class="section-title">ABOUT</h2><div class="section-line"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-left reveal">
+      <p class="about-text">I am a <strong>Content and AI Strategist</strong> who loves mixing technology with creativity. I have hands-on experience building digital brands, managing content pipelines, and working with the latest AI tools for image, video, and text creation.</p>
+      <p class="about-text">My work ranges from <strong>AI-generated product visuals and UGC-style videos</strong> to SEO blogs, brand strategy, and social media campaigns. I have worked with real clients and platforms like <strong>Zanopy AI, Myntra, GoIbibo</strong>, and ethnic fashion brands.</p>
+      <p class="about-text">I am very comfortable working with tools like <strong>ChatGPT, Midjourney, HeyGen AI, Canva, WordPress</strong>, and video editing software. I learn new tools fast and always focus on quality output.</p>
+    </div>
+    <div class="about-right reveal">
+      <div class="skills-group">
+        <div class="skills-group-label">AI & Automation</div>
+        <div class="skills-tags"><span class="tag">Prompt Engineering</span><span class="tag">AI Content Workflows</span><span class="tag">Text-to-Image</span><span class="tag">Text-to-Video</span><span class="tag">AI Image Editing</span><span class="tag">Model Testing</span><span class="tag">Generative AI Tools</span></div>
+      </div>
+      <div class="skills-group">
+        <div class="skills-group-label">Platforms & Tools</div>
+        <div class="skills-tags"><span class="tag">Zanopy AI</span><span class="tag">ChatGPT</span><span class="tag">Midjourney</span><span class="tag">HeyGen AI</span><span class="tag">Canva</span><span class="tag">WordPress</span><span class="tag">Google Workspace</span><span class="tag">Notion</span></div>
+      </div>
+      <div class="skills-group">
+        <div class="skills-group-label">Content & Branding</div>
+        <div class="skills-tags"><span class="tag">SEO Writing</span><span class="tag">Brand Strategy</span><span class="tag">Digital Storytelling</span><span class="tag">Content Calendars</span><span class="tag">Social Media Planning</span><span class="tag">Copywriting Hooks</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <div class="section-watermark">WORK</div>
+  <div class="section-header reveal">
+    <span class="section-num">02</span><h2 class="section-title">WORK</h2><div class="section-line"></div>
+  </div>
+  <div class="work-tabs reveal">
+    <button class="work-tab active" data-tab="videos">UGC AI Videos</button>
+    <button class="work-tab" data-tab="clothing">Clothing Brand</button>
+    <button class="work-tab" data-tab="services">Services</button>
+    <button class="work-tab" data-tab="realestate">Real Estate AI</button>
+    <button class="work-tab" data-tab="products">AI Product Visuals</button>
+    <button class="work-tab" data-tab="content">Content & Creatives</button>
+  </div>
+
+  <!-- UGC VIDEOS -->
+  <div class="work-panel active" id="tab-videos">
+    <div class="videos-grid">
+      <div class="video-card wide">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1K_DG8GIc7_w_tRw8l4M5ow-Yhy06dqV3" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">AI UGC · Product Video</span></div>
+      </div>
+      <div class="video-card">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1N_O8gOHqjrsoeB3WYYa2PEQx8Il_DVMk" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">AI UGC · Brand Reel</span></div>
+      </div>
+      <div class="video-card">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1PgmqT64I786yPRSnjovRRfGSGV6B6sZS" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">AI UGC · Social Content</span></div>
+      </div>
+      <div class="video-card">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1NvzNeIvSMR7ES4fH_xnpXcuQecugt9c0" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">AI UGC · Instagram Reel</span></div>
+      </div>
+      <div class="video-card">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1WQsKGOYlKOMIXalzaw09BNg_rGVSVqWt" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">AI UGC · Creative Ad</span></div>
+      </div>
+    </div>
+    <p class="panel-hint">↑ Click any video to play / pause</p>
+  </div>
+
+  <!-- CLOTHING BRAND -->
+  <div class="work-panel" id="tab-clothing">
+    <div class="cat-badge">Clothing Brand · AI Video Content</div>
+    <p class="cat-desc">AI-generated fashion and lifestyle videos for ethnic & clothing brands — built for Instagram reels, product launches, and brand storytelling campaigns.</p>
+    <div class="videos-grid-clothing">
+      <div class="video-card-cl">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1BcBHwFG7xoCQsVjigL6BJlePhexQmyV9" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">Brand Reel 01</span></div>
+      </div>
+      <div class="video-card-cl">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1CAudm3TQfRGEu-zPJ0jO-lZRqmFqnNu1" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">Brand Reel 02</span></div>
+      </div>
+      <div class="video-card-cl">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1ENthvBp9L6yRfO-kKg34RM_w7v6cKXNs" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">Fashion Story 01</span></div>
+      </div>
+      <div class="video-card-cl">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1STh1apq1zCkYaUrv2bPxhE6ZLMK5CL7q" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">Fashion Story 02</span></div>
+      </div>
+      <div class="video-card-cl">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1_3X7t6nImLb9TGs1PejXGy9j1yJOJI_E" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">Lifestyle Ad 01</span></div>
+      </div>
+      <div class="video-card-cl">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1cKB0YoBdZH0o95RMUAS00lmZnrAosCEL" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">Lifestyle Ad 02</span></div>
+      </div>
+      <div class="video-card-cl">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1W-8KhUELQy90Ax7DOfLUK0WkOCCCRRMk" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">Collection Reveal 01</span></div>
+      </div>
+      <div class="video-card-cl">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1dRp02QmEZrBcc61onZbfKaO42KYJrMv7" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">Collection Reveal 02</span></div>
+      </div>
+    </div>
+    <p class="panel-hint">↑ Click any video to play / pause</p>
+  </div>
+
+  <!-- SERVICES -->
+  <div class="work-panel" id="tab-services">
+    <div class="cat-badge">Services · AI Promotional Videos</div>
+    <p class="cat-desc">AI-produced service promotion videos for business clients — cinematic intros, brand awareness, and targeted ad content built for conversion.</p>
+    <div class="videos-grid-svc">
+      <div class="video-card-svc full">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=16kxNism2w9ExT20roTSiLlAAMmIhU156" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">Services · Brand Promo 01</span></div>
+      </div>
+      <div class="video-card-svc">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1GuONp8kfojRbodeGvcoaYWyeIF8Tr4qP" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">Services · Brand Promo 02</span></div>
+      </div>
+      <div class="video-card-svc">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1Tvj14qyz672Umb16C2NLmML9N_wOpSAD" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">Services · Brand Promo 03</span></div>
+      </div>
+      <div class="video-card-svc">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1V3kbUsla2XF1mLnagTL412YtAYIhYUbz" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">Services · Cinematic Ad 01</span></div>
+      </div>
+      <div class="video-card-svc">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1c5SzxTCMA2VJOafzxmDTCt_HR9cUbAii" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">Services · Cinematic Ad 02</span></div>
+      </div>
+    </div>
+    <p class="panel-hint">↑ Click any video to play / pause</p>
+  </div>
+
+  <!-- REAL ESTATE -->
+  <div class="work-panel" id="tab-realestate">
+    <div class="cat-badge">Real Estate · AI Video Production</div>
+    <p class="cat-desc">AI-generated cinematic property videos for real estate brands — from luxury villa listings to new development launches. Created using text-to-video AI tools with custom scripting and visual direction.</p>
+    <div class="videos-grid-re">
+      <div class="video-card-re full">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1eiCSRYXRw9ZP1FrYyi0ya3FstMRTbOhM" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">Sonipat Rising · New Benchmark Development · AI Cinematic</span></div>
+      </div>
+      <div class="video-card-re">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=10YKtw5Z90nF03WcCdIMe_AXjdT3yZdd6" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">Koh Samui Thailand · ฿130M Luxury Villa · For Sale</span></div>
+      </div>
+      <div class="video-card-re">
+        <video muted loop playsinline preload="metadata"><source src="https://drive.google.com/uc?export=download&id=1wMosw6T0_5Tr1QaTNjYX0XYWl801TIVg" type="video/mp4"></video>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label">Antes da Obra · Pre-Construction Vision Ad · Brazil</span></div>
+      </div>
+    </div>
+    <p class="panel-hint">↑ Click any video to play / pause</p>
+  </div>
+
+  <!-- PRODUCT IMAGES -->
+  <div class="work-panel" id="tab-products">
+    <div class="img-block">
+      <div class="img-section-label">AI Generated Product Shots — Organix Mantra & Clients</div>
+      <div class="img-grid-2">
+        <div class="img-card landscape" data-src="https://drive.google.com/thumbnail?id=1kiG2M1zHRYbcYJMAA9HCudgug-0J9cSq&sz=w800">
+          <img src="https://drive.google.com/thumbnail?id=1kiG2M1zHRYbcYJMAA9HCudgug-0J9cSq&sz=w800" alt="Christmas product" loading="lazy">
+          <div class="img-overlay"><span class="img-overlay-label">Skincare · Christmas Lifestyle Scene</span></div>
+        </div>
+        <div class="img-card portrait" data-src="https://drive.google.com/thumbnail?id=1lnQD9IwDiEyu_aiHVZGLN_a8pcL7jsf8&sz=w800">
+          <img src="https://drive.google.com/thumbnail?id=1lnQD9IwDiEyu_aiHVZGLN_a8pcL7jsf8&sz=w800" alt="Grapeseed Oil" loading="lazy">
+          <div class="img-overlay"><span class="img-overlay-label">Organix Mantra · Grapeseed Oil</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="img-block">
+      <div class="img-section-label">AI Background Editing & Shadow Removal</div>
+      <div class="img-grid-2">
+        <div class="img-card landscape" data-src="https://drive.google.com/thumbnail?id=11SrZgUP7nF3Om5p3VfVpaASsP4JK7qOu&sz=w800">
+          <img src="https://drive.google.com/thumbnail?id=11SrZgUP7nF3Om5p3VfVpaASsP4JK7qOu&sz=w800" alt="Beer bottle edit" loading="lazy">
+          <div class="img-overlay"><span class="img-overlay-label">Beer Bottle · Studio Lighting Before/After</span></div>
+        </div>
+        <div class="img-card landscape" data-src="https://drive.google.com/thumbnail?id=152NvruzLaXdio269DcLEFdwY7uxsPKHi&sz=w800">
+          <img src="https://drive.google.com/thumbnail?id=152NvruzLaXdio269DcLEFdwY7uxsPKHi&sz=w800" alt="Shadow remover" loading="lazy">
+          <div class="img-overlay"><span class="img-overlay-label">AI Shadow Remover · Zanopy AI Tool</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT CREATIVES -->
+  <div class="work-panel" id="tab-content">
+    <div class="img-block">
+      <div class="img-section-label">Viral Blueprint Infographic Series — AI Generated</div>
+      <div class="img-grid-4">
+        <div class="img-card blueprint" data-src="https://drive.google.com/thumbnail?id=1f_1WeafUocHx-IyYbcztQpfJIRA5GJn0&sz=w800">
+          <img src="https://drive.google.com/thumbnail?id=1f_1WeafUocHx-IyYbcztQpfJIRA5GJn0&sz=w800" alt="Taj Mahal Blueprint" loading="lazy">
+          <div class="img-overlay"><span class="img-overlay-label">Taj Mahal · Blueprint</span></div>
+        </div>
+        <div class="img-card blueprint" data-src="https://drive.google.com/thumbnail?id=1guAtNHXdwB_1TnACAhXgkUXcMsF1WA-0&sz=w800">
+          <img src="https://drive.google.com/thumbnail?id=1guAtNHXdwB_1TnACAhXgkUXcMsF1WA-0&sz=w800" alt="Eiffel Tower Blueprint" loading="lazy">
+          <div class="img-overlay"><span class="img-overlay-label">Eiffel Tower · Blueprint</span></div>
+        </div>
+        <div class="img-card blueprint" data-src="https://drive.google.com/thumbnail?id=1is6FCMx4WUtbAMnHQOCzvdynTTR6Ac-o&sz=w800">
+          <img src="https://drive.google.com/thumbnail?id=1is6FCMx4WUtbAMnHQOCzvdynTTR6Ac-o&sz=w800" alt="Burj Khalifa Blueprint" loading="lazy">
+          <div class="img-overlay"><span class="img-overlay-label">Burj Khalifa · Blueprint</span></div>
+        </div>
+        <div class="img-card blueprint" data-src="https://drive.google.com/thumbnail?id=1jdZN07Y_aNdlLfWBHrjI2tj-lX207jeZ&sz=w800">
+          <img src="https://drive.google.com/thumbnail?id=1jdZN07Y_aNdlLfWBHrjI2tj-lX207jeZ&sz=w800" alt="Brihadeswarar Temple" loading="lazy">
+          <div class="img-overlay"><span class="img-overlay-label">Brihadeswarar Temple · Blueprint</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="img-block">
+      <div class="img-section-label">AI Product Ad Campaigns — Matcha Latte & Fashion</div>
+      <div class="img-grid-3">
+        <div class="img-card portrait" data-src="https://drive.google.com/thumbnail?id=1usa_owK7pUfYUjAuUp1Gqo29PRzvilKO&sz=w800">
+          <img src="https://drive.google.com/thumbnail?id=1usa_owK7pUfYUjAuUp1Gqo29PRzvilKO&sz=w800" alt="Matcha Forest" loading="lazy">
+          <div class="img-overlay"><span class="img-overlay-label">Matcha Latte · Forest Mood Ad</span></div>
+        </div>
+        <div class="img-card portrait" data-src="https://drive.google.com/thumbnail?id=1vVCN9dKra_gmbIX-4IKuTNplOdc8x6zz&sz=w800">
+          <img src="https://drive.google.com/thumbnail?id=1vVCN9dKra_gmbIX-4IKuTNplOdc8x6zz&sz=w800" alt="Matcha Lifestyle" loading="lazy">
+          <div class="img-overlay"><span class="img-overlay-label">Matcha Latte · Lifestyle UGC Ad</span></div>
+        </div>
+        <div class="img-card portrait" data-src="https://drive.google.com/thumbnail?id=1vvW4TDuoGMm21LhhyOBfCZldbrs9iaUd&sz=w800">
+          <img src="https://drive.google.com/thumbnail?id=1vvW4TDuoGMm21LhhyOBfCZldbrs9iaUd&sz=w800" alt="AI Fashion Model" loading="lazy">
+          <div class="img-overlay"><span class="img-overlay-label">AI Fashion Model · Lifestyle Ad</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-watermark">EXP</div>
+  <div class="section-header reveal">
+    <span class="section-num">03</span><h2 class="section-title">EXPERIENCE</h2><div class="section-line"></div>
+  </div>
+  <div class="exp-list">
+    <div class="exp-item">
+      <div class="exp-meta"><div class="exp-period">Oct 2025 – Present</div><div class="exp-company">Shaan-e-Taj (Taj Fashion)<br>Jalandhar / Hybrid</div></div>
+      <div class="exp-info">
+        <div class="exp-role">Creative Producer & Brand Strategist</div>
+        <ul class="exp-points">
+          <li>Led full brand strategy and creative direction for an ethnic fashion brand</li>
+          <li>Planned and executed content for Instagram, campaigns, and product launches</li>
+          <li>Coordinated with designers, tailors, and marketing team for smooth execution</li>
+          <li>Managed visual consistency across social media, catalogues, and offline creatives</li>
+          <li>Helped with shoot planning, content flow, and brand tone</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-meta"><div class="exp-period">Jul 2025 – Oct 2025</div><div class="exp-company">Soul Curry Media Technology LLP</div></div>
+      <div class="exp-info">
+        <div class="exp-role">Content Researcher & Curator</div>
+        <ul class="exp-points">
+          <li>Core contributor to Zanopy AI — an all-in-one AI marketing platform</li>
+          <li>Conducted daily product testing, bug documentation, and prompt optimization across AI tools</li>
+          <li>Collaborated with developers to refine AI model accuracy and improve UI/UX</li>
+          <li>Managed brand clients: Organix Mantra, Iron Tailor — content calendars, hooks, hashtags, post strategies</li>
+          <li>Authored SEO-optimized blogs for Myntra, GoIbibo, Booking.com</li>
+          <li>Represented Zanopy AI at ClickSummit 2025</li>
+          <li>Led the DFY Project — built 70+ AI-based video templates with a creative team</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-meta"><div class="exp-period">Aug 2023 – Jul 2024</div><div class="exp-company">Taj Fashion (Clothing Boutique)<br>Jalandhar</div></div>
+      <div class="exp-info">
+        <div class="exp-role">Sales Manager & Advertising Manager</div>
+        <ul class="exp-points">
+          <li>Led a small sales team and managed daily client operations and upselling</li>
+          <li>Built relationships with international clients across UK, USA, Canada, Germany, and Switzerland</li>
+          <li>Generated 25% of total boutique orders through tailored Instagram campaigns</li>
+          <li>Drove revenue growth via influencer partnerships and festive-season offers</li>
+          <li>Contributed 10% to overall sales through high-conversion digital promotions</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-watermark">CERT</div>
+  <div class="section-header reveal">
+    <span class="section-num">04</span><h2 class="section-title">CERTIFICATIONS</h2><div class="section-line"></div>
+  </div>
+  <div class="certs-grid reveal">
+    <div class="cert-card"><div class="cert-icon">Marketing</div><div class="cert-name">Advertising with Meta</div><div class="cert-issuer">Meta · Coursera, 2025</div></div>
+    <div class="cert-card"><div class="cert-icon">Finance</div><div class="cert-name">Financial Markets</div><div class="cert-issuer">Yale University (Prof. Robert J. Shiller) · Coursera, 2025</div></div>
+    <div class="cert-card"><div class="cert-icon">Finance</div><div class="cert-name">Investment Management in an Evolving World</div><div class="cert-issuer">HEC Paris & AXA Investment Managers · Coursera, 2025</div></div>
+    <div class="cert-card"><div class="cert-icon">Marketing</div><div class="cert-name">Google Ads for Beginners</div><div class="cert-issuer">Coursera Project Network, 2025</div></div>
+    <div class="cert-card"><div class="cert-icon">Technology</div><div class="cert-name">Cyber Job Simulation</div><div class="cert-issuer">Deloitte Australia · Forage, Jun 2025</div></div>
+    <div class="cert-card"><div class="cert-icon">Technology</div><div class="cert-name">Data Analytics Job Simulation</div><div class="cert-issuer">Deloitte Australia · Forage, Jun 2025</div></div>
+    <div class="cert-card"><div class="cert-icon">Technology</div><div class="cert-name">Technology Consulting Job Simulation</div><div class="cert-issuer">Deloitte Australia · Forage, Jun 2025</div></div>
+    <div class="cert-card"><div class="cert-icon">Technical</div><div class="cert-name">Python & Data Science</div><div class="cert-issuer">Ducat Institute, New Delhi · Apr–Dec 2023</div></div>
+    <div class="cert-card"><div class="cert-icon">Creative</div><div class="cert-name">Photoshop & Video Editing Workshop</div><div class="cert-issuer">MAAC, Faridabad · Dec 2023</div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-big reveal">LET'S<br>WORK<br><span>TOGETHER</span></div>
+    <p class="contact-sub reveal">I am open to internship roles, freelance projects, and full-time opportunities in AI content, visual creation, and brand strategy.</p>
+    <div class="contact-details reveal">
+      <div class="contact-item"><span class="contact-label">Email</span><a href="mailto:work.puneetkumar@gmail.com" class="contact-value">work.puneetkumar@gmail.com</a></div>
+      <div class="contact-item"><span class="contact-label">Phone</span><a href="tel:+918178977689" class="contact-value">+91 8178977689</a></div>
+      <div class="contact-item"><span class="contact-label">Location</span><span class="contact-value">Faridabad, Haryana</span></div>
+    </div>
+    <div class="reveal"><a href="mailto:work.puneetkumar@gmail.com" class="btn-primary" style="display:inline-block;">Send Me an Email</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">PUNEET KUMAR</div>
+  <div class="footer-copy">© 2025 · AI Content & Visual Strategist</div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor=document.getElementById('cursor'),follower=document.getElementById('cursorFollower');
+  let fx=0,fy=0,mx=0,my=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+  (function animCursor(){fx+=(mx-fx)*.12;fy+=(my-fy)*.12;follower.style.left=fx+'px';follower.style.top=fy+'px';requestAnimationFrame(animCursor);})();
+  document.querySelectorAll('a,button,.video-card,.video-card-re,.video-card-cl,.video-card-svc,.img-card,.tag,.cert-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>follower.classList.add('expand'));
+    el.addEventListener('mouseleave',()=>follower.classList.remove('expand'));
+  });
+
+  // Tabs
+  document.querySelectorAll('.work-tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      document.querySelectorAll('.work-tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.work-panel').forEach(p=>p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-'+tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Universal video card
+  function setupVideoCard(card){
+    const v=card.querySelector('video');
+    if(!v)return;
+    card.addEventListener('mouseenter',()=>v.play().catch(()=>{}));
+    card.addEventListener('mouseleave',()=>{v.pause();v.currentTime=0;card.classList.remove('playing');});
+    card.addEventListener('click',()=>{
+      if(v.paused){v.play().then(()=>card.classList.add('playing')).catch(()=>{});}
+      else{v.pause();card.classList.remove('playing');}
+    });
+    v.addEventListener('play',()=>card.classList.add('playing'));
+    v.addEventListener('pause',()=>card.classList.remove('playing'));
+    v.addEventListener('ended',()=>card.classList.remove('playing'));
+  }
+  document.querySelectorAll('.video-card,.video-card-re,.video-card-cl,.video-card-svc').forEach(setupVideoCard);
+
+  // Lightbox
+  const lb=document.getElementById('lightbox'),lbImg=document.getElementById('lbImg');
+  document.querySelectorAll('.img-card').forEach(card=>{
+    card.addEventListener('click',()=>{lbImg.src=card.dataset.src||card.querySelector('img').src;lb.classList.add('open');});
+  });
+  document.getElementById('lbClose').addEventListener('click',()=>lb.classList.remove('open'));
+  lb.addEventListener('click',e=>{if(e.target===lb)lb.classList.remove('open');});
+
+  // Reveal scroll
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),100);});
+  },{threshold:.1});
+  document.querySelectorAll('.reveal,.exp-item').forEach(el=>obs.observe(el));
+  document.querySelectorAll('.exp-item').forEach((el,i)=>el.style.transitionDelay=(i*.15)+'s');
+</script>
+</body>
+</html>
